@@ -1,0 +1,30 @@
+{
+	"schemaVersion": 1,
+	"id": "zombie-uuid-preservation",
+	"version": "${version}",
+	"name": "Zombie UUID Preservation",
+	"description": "Preserves randomized villager textures after zombie conversion.",
+	"authors": [
+		"Estecka"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/project/zombie-uuid-preservation",
+		"sources": "https://github.com/Estecka/mc-Zombie-Uuid-Preservation"
+	},
+	"license": "MIT",
+	"icon": "assets/uuid-preserve/modicon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+		]
+	},
+	"mixins": [
+		"zombie-uuid-preservation.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.11",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
