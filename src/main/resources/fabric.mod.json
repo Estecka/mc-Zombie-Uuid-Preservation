@@ -9,7 +9,8 @@
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/project/zombie-uuid-preservation",
-		"sources": "https://github.com/Estecka/mc-Zombie-Uuid-Preservation"
+		"sources": "https://github.com/Estecka/mc-Zombie-Uuid-Preservation",
+		"issues":  "https://github.com/Estecka/mc-Zombie-Uuid-Preservation/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/uuid-preserve/modicon.png",
@@ -22,9 +23,9 @@
 		"zombie-uuid-preservation.mixins.json"
 	],
 	"depends": {
+		"minecraft": ">=1.21 <1.21.2",
 		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21",
-		"java": ">=21",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"java": ">=21"
 	}
 }
