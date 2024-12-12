@@ -16,17 +16,31 @@ import net.minecraft.entity.mob.MobEntity;
 public abstract class MobEntityMixin
 {
 	/**
+	 * In vanilla, this  could be  included  in the injector below  instead, but
+	 * here it is injected earlier so  that RandomMobSizes can use the preserved
+	 * UUID.
+	 */
+	@Inject( method="convertTo", at=@At(value="INVOKE", target="net/minecraft/entity/conversion/EntityConversionType.setUpNewEntity(Lnet/minecraft/entity/mob/MobEntity;Lnet/minecraft/entity/mob/MobEntity;Lnet/minecraft/entity/conversion/EntityConversionContext;)V") )
+	private void PreserveUuid(EntityType<?> neoType, EntityConversionContext context, SpawnReason reason, Finalizer<?> finalizer, CallbackInfoReturnable<MobEntity> ci, @Local MobEntity neoEntity)
+	{
+		if (context.type().shouldDiscardOldEntity()) {
+			MobEntity oldEntity = (MobEntity)(Object)this;
+			neoEntity.setUuid(oldEntity.getUuid());
+		}
+	}
+
+	/**
 	 * Reimplements most of the tail end of the method, but performs the actions
 	 * in a different order. The old entity needs to be discarded before the new
 	 * one is spawned in order to avoid UUID conflicts.
 	 */
 	@Inject( method="convertTo", cancellable=true, at=@At(value="INVOKE", target="net/minecraft/server/world/ServerWorld.spawnEntity(Lnet/minecraft/entity/Entity;)Z") )
-	private void PreserveUuid(EntityType<?> neoType, EntityConversionContext context, SpawnReason reason, Finalizer<?> finalizer, CallbackInfoReturnable<MobEntity> ci, @Local MobEntity neoEntity)
+	private void DiscardThenSpawn(EntityType<?> neoType, EntityConversionContext context, SpawnReason reason, Finalizer<?> finalizer, CallbackInfoReturnable<MobEntity> ci, @Local MobEntity neoEntity)
 	{
 		if (context.type().shouldDiscardOldEntity()) {
 			MobEntity oldEntity = (MobEntity)(Object)this;
 			oldEntity.discard();
-			neoEntity.setUuid(oldEntity.getUuid());
+			// neoEntity.setUuid(oldEntity.getUuid());
 			oldEntity.getWorld().spawnEntity(neoEntity);
 			ci.setReturnValue(neoEntity);
 		}
